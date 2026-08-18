@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AlkeWallet" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/alke_blue_primary</item>
+        <item name="colorPrimaryVariant">@color/alke_blue_dark</item>
+        <item name="colorOnPrimary">@color/alke_white</item>
+        <item name="colorSecondary">@color/alke_green_action</item>
+        <item name="colorOnSecondary">@color/alke_white</item>
+    </style>
+</resources>

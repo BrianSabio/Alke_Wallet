@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AlkeWallet</string>
+    <string name="tagline">El lugar mas seguro para tu dinero</string>
+
+    <!-- Auth Selector -->
+    <string name="btn_crear_cuenta">Crear cuenta nueva</string>
+    <string name="link_ya_tiene_cuenta">Ya tiene cuenta?</string>
+
+    <!-- Login -->
+    <string name="login_title">Logea y empeza a tranferir!</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Contraseña</string>
+    <string name="hint_email">Ingresar tu email</string>
+    <string name="hint_password">Ingresar tu contraseña</string>
+    <string name="link_forgot_password">Olvidaste tu contraseña?</string>
+    <string name="btn_login">Login</string>
+    <string name="link_crear_nueva_cuenta">Crear una nueva cuenta</string>
+
+    <!-- Signup -->
+    <string name="signup_title">Registrarse y empezar a transferir</string>
+    <string name="label_name">Nombre</string>
+    <string name="label_lastname">Apellido</string>
+    <string name="label_repassword">Reingresar contraseña</string>
+    <string name="hint_name">Ingresar nombre</string>
+    <string name="hint_lastname">Ingresar apellido</string>
+    <string name="hint_email_signup">Ingresar Email</string>
+    <string name="hint_password_signup">Ingresar contraseña</string>
+    <string name="hint_repassword">Reingresar contraseña</string>
+    <string name="btn_crear_cuenta_signup">Crear Cuenta</string>
+    <string name="link_ya_tienes_cuenta">Ya tienes una cuenta??</string>
+
+    <!-- Home -->
+    <string name="home_title">Inicio</string>
+    <string name="home_greeting">Hola, Amanda!</string>
+    <string name="home_balance_label">Balance Total</string>
+    <string name="home_balance_amount">$124.57</string>
+    <string name="btn_enviar_dinero">Enviar Dinero</string>
+    <string name="btn_ingresar_dinero">Ingresar dinero</string>
+    <string name="home_transactions_title">Ultimas transacciones</string>
+    <string name="home_empty_msg">No hay transacciones registradas!</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Mi perfil</string>
+    <string name="profile_username">Amanda Alkemy</string>
+    <string name="profile_menu_info">Mi Informacion</string>
+    <string name="profile_menu_cards">Mis tarjetas</string>
+    <string name="profile_menu_options">Opciones</string>
+    <string name="profile_menu_help">Crentro de ayuda</string>
+
+    <!-- Transactions -->
+    <string name="send_title">Enviar Dinero</string>
+    <string name="request_title">ingresar Dinero</string>
+    <string name="label_amount_send">Cantidad a transferir</string>
+    <string name="label_amount_request">Cantidad a ingresar</string>
+    <string name="label_notes">Notas de transferencia</string>
+    <string name="hint_notes">Agregar notas de transferencia(opcional)</string>
+    <string name="btn_send">Enviar Dinero</string>
+    <string name="btn_request">Ingresar Dinero</string>
+</resources>

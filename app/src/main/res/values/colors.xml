@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="alke_blue_primary">#4A90D9</color>
+    <color name="alke_blue_dark">#1A87DD</color>
+    <color name="alke_blue_light">#BFE0F5</color>
+    <color name="alke_green_action">#3DBE6C</color>
+    <color name="alke_white">#FFFFFF</color>
+    <color name="alke_gray_bg">#F5F5F5</color>
+    <color name="alke_gray_text">#9E9E9E</color>
+    <color name="alke_black">#1A1A1A</color>
+    <color name="alke_yellow_badge">#F8BB18</color>
+</resources>
