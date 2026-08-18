@@ -189,5 +189,5 @@ override fun onDestroyView() {
 
 ## Contacto y Soporte
 - **GitHub Issues:** [Reportar un problema](https://github.com/BrianSabio/Alke_Wallet/issues)
-- **LinkedIn:** [Brian Sabio](https://www.linkedin.com/in/briansabio/)
+- **LinkedIn:** [Brian Sabio](https://www.linkedin.com/in/brian-ezequiel-sabio/)
 
