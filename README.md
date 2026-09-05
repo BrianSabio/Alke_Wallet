@@ -1,13 +1,13 @@
 # AlkeWallet - Digital Wallet
 
-Una billetera digital moderna desarrollada en Kotlin nativo para Android.
+Una billetera digital moderna desarrollada en Kotlin nativo para Android siguiendo una arquitectura **MVC estricta**.
 
 ![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Android-green.svg)
 ![SDK](https://img.shields.io/badge/SDK-24%2B-lightgrey.svg)
 ![Status](https://img.shields.io/badge/Status-Complete-success.svg)
 
-AlkeWallet es una aplicación móvil diseñada para la gestión simulada de finanzas personales. Permite a los usuarios visualizar su saldo, revisar un historial detallado de movimientos, gestionar su perfil y realizar operaciones de envío y solicitud de dinero mediante una interfaz intuitiva.
+AlkeWallet es una aplicación móvil diseñada para la gestión simulada de finanzas personales. Permite a los usuarios autenticarse, visualizar su saldo actual en tiempo real, revisar un historial detallado de movimientos, gestionar su perfil de usuario con cierre de sesión real y realizar operaciones financieras de envío e ingreso de dinero mediante una interfaz limpia y adaptada a **Edge-to-Edge** (Android 15+).
 
 ---
 
@@ -18,21 +18,23 @@ AlkeWallet es una aplicación móvil diseñada para la gestión simulada de fina
 4. [Instalación y Setup](#instalación-y-setup)
 5. [Guía de Uso / Flujo de la App](#guía-de-uso--flujo-de-la-app)
 6. [Arquitectura y Decisiones Técnicas](#arquitectura-y-decisiones-técnicas)
-7. [Problemas Resueltos](#problemas-resueltos)
-8. [Validación del Proyecto](#validación-del-proyecto)
-9. [Estructura de Pantallas](#estructura-de-pantallas)
-10. [Configuración del Proyecto](#configuración-del-proyecto)
-11. [Autores y Contribuciones](#autores-y-contribuciones)
+7. [Pruebas Unitarias JVM](#pruebas-unitarias-jvm)
+8. [Problemas Resueltos](#problemas-resueltos)
+9. [Validación del Proyecto](#validación-del-proyecto)
+10. [Estructura de Pantallas](#estructura-de-pantallas)
+11. [Configuración del Proyecto](#configuración-del-proyecto)
+12. [Autores y Contribuciones](#autores-y-contribuciones)
 
 ---
 
 ## Características Principales
 
-- **Splash Screen:** Pantalla de bienvenida con branding institucional y transición automática de 2.5 segundos.
-- **Módulo de Autenticación:** Sistema híbrido de Activities y Fragments para el selector de acceso, inicio de sesión y registro.
-- **Dashboard (Home):** Resumen de saldo y lista dinámica de transacciones (enviadas/recibidas) con estados visuales diferenciados.
-- **Gestión de Perfil:** Pantalla de usuario con menú de opciones para información, tarjetas y configuración.
-- **Operaciones Financieras:** Flujos dedicados para enviar dinero a contactos y solicitar ingresos de saldo.
+- **Splash Screen:** Pantalla de bienvenida con branding institucional, transición automática de 2.5 segundos e integración de insets del sistema.
+- **Autenticación en Memoria:** Registro de usuarios y login con validación de formato de correo (Regex) y prevención de cuentas duplicadas.
+- **Dashboard en Tiempo Real (Home):** Muestra el saldo actualizado y la lista dinámica de transacciones (enviadas/recibidas). Soporta estados vacíos (*Empty State*) y actualización automática en `onResume()`.
+- **Gestión de Perfil y Cierre de Sesión:** Visualización dinámica del usuario activo, avatar vectorial propio (`ic_avatar_placeholder`) y cierre de sesión real con limpieza completa del back stack (`FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK`).
+- **Enviar Dinero:** Formulario interactivo con destinatario editable, monto con verificación de saldo insuficiente y campo opcional de notas (concatenadas como `"Nombre — Nota"` en el historial).
+- **Ingresar Dinero:** Formulario interactivo para solicitud o recarga de fondos con límite máximo de **$5000.00 por transacción** y soporte para notas.
 
 ---
 
@@ -40,13 +42,13 @@ AlkeWallet es una aplicación móvil diseñada para la gestión simulada de fina
 
 | Componente | Tecnología | Descripción |
 |------------|------------|-------------|
-| **Lenguaje** | Kotlin 1.9+ | Lenguaje principal del proyecto. |
-| **Plataforma** | Android | Ejecución nativa (Min SDK 24 / Target 37). |
-| **Build System** | Gradle (Kotlin DSL) | Gestión de dependencias y compilación. |
-| **Arquitectura** | Modular por Features | Organización de paquetes según funcionalidad. |
-| **UI Framework** | XML Layouts | Diseño de interfaces mediante Android Views. |
-| **Binding** | View Binding | Interacción segura y eficiente con las vistas. |
-| **Diseño** | Material Design 3 | Uso de componentes y estilos estandarizados. |
+| **Lenguaje** | Kotlin 1.9+ | Lenguaje principal del proyecto (compatibilidad Java 11). |
+| **Plataforma** | Android | Ejecución nativa (Min SDK 24 / Target 37 / Compile 37). |
+| **Build System** | Gradle (Kotlin DSL) | AGP 9.3.1 y Version Catalogs (`libs.versions.toml`). |
+| **Arquitectura** | MVC Estricto | Separación clara entre Modelo (JVM puro), Vista (XML) y Controlador (Activities/Fragments). |
+| **UI Framework** | XML Layouts | Diseño mediante Android Views y Material Design 3. |
+| **Binding** | View Binding | Interacción segura con layouts eliminando `findViewById`. |
+| **Edge-to-Edge** | WindowInsetsCompat | Manejo programático de barras del sistema mediante `ViewCompat`. |
 
 ---
 
@@ -54,18 +56,20 @@ AlkeWallet es una aplicación móvil diseñada para la gestión simulada de fina
 
 ```text
 AlkeWallet/
-├── app/src/main/
-│   ├── java/com/alkewallet/
-│   │   ├── splash/         # Lógica de arranque
-│   │   ├── auth/           # Login, Signup y Selector
-│   │   ├── home/           # Dashboard y Adapters de lista
-│   │   ├── profile/        # Gestión de perfil de usuario
-│   │   └── transactions/   # Módulos de envío y solicitud
-│   ├── res/
-│   │   ├── layout/         # Definiciones de interfaz XML
-│   │   ├── drawable/       # Recursos gráficos vectoriales
-│   │   └── values/         # Cadenas, colores y dimensiones
-│   └── AndroidManifest.xml
+├── app/src/
+│   ├── main/
+│   │   ├── java/com/alkewallet/
+│   │   │   ├── model/         # Modelo de dominio en Kotlin puro (AuthModel, WalletAccountModel, etc.)
+│   │   │   ├── splash/        # SplashActivity (pantalla de bienvenida)
+│   │   │   ├── auth/          # AuthActivity, LoginFragment y SignupFragment
+│   │   │   ├── home/          # HomePageActivity y TransactionAdapter
+│   │   │   ├── profile/       # ProfileActivity y gestión de sesión
+│   │   │   └── transactions/  # SendMoneyActivity y RequestMoneyActivity
+│   │   └── res/
+│   │       ├── drawable/      # Vector Drawables (ic_avatar_placeholder, ic_send, ic_request, etc.)
+│   │       ├── layout/        # Layouts XML con View Binding
+│   │       └── values/        # Cadenas, colores (alke_*) y dimensiones
+│   └── test/java/com/alkewallet/model/ # Pruebas unitarias JVM (AuthModelTest, WalletAccountModelTest)
 └── build.gradle.kts
 ```
 
@@ -74,80 +78,120 @@ AlkeWallet/
 ## Instalación y Setup
 
 ### Requisitos Previos
-- Android Studio Quail 3 (o superior).
-- JDK 17+.
-- Android SDK 24 instalado.
+- Android Studio Hedgehog / Iguana / Ladybug o superior.
+- JDK 17 / Java 11.
+- Android SDK 24+ instalado.
 - Git.
 
 ### Pasos para clonar y ejecutar
-1. Clone el repositorio:
+1. Clonar el repositorio:
    ```bash
    git clone https://github.com/BrianSabio/Alke_Wallet.git
    ```
-2. Abra el proyecto en Android Studio.
-3. Sincronice el proyecto con los archivos de Gradle.
-4. Conecte un dispositivo físico o emulador (API 24+).
-5. Presione `Shift + F10` para ejecutar la aplicación.
+2. Abrir el proyecto en Android Studio.
+3. Sincronizar los archivos de Gradle.
+4. Conectar un dispositivo físico o emulador (API 24+).
+5. Ejecutar la aplicación (`Shift + F10`).
+6. Ejecutar las pruebas unitarias en JVM local:
+   ```bash
+   ./gradlew testDebugUnitTest
+   ```
 
 ---
 
 ## Guía de Uso / Flujo de la App
 
-**Splash (2.5s)** ➔ **Auth Selector** ➔ **Login / Signup**
-- **Login:** Ingrese credenciales simuladas para acceder al Dashboard.
-- **Signup:** Complete el registro para volver al inicio de sesión.
+**Splash (2.5s)** ➔ **Auth Selector / Login / Signup**
+- **Registro:** Ingrese nombre, apellido, correo (debe ser un formato válido) y contraseña. Si el correo ya existe, el Modelo rechazará el registro.
+- **Login:** Ingrese credenciales registradas. Al autenticarse con éxito, navega al Home y destruye la pantalla de acceso para evitar retrocesos indebidos.
 
-**Home (Dashboard)** ➔ Click en:
-- **Perfil:** Visualización de datos de cuenta.
-- **Enviar Dinero:** Formulario con campo de monto (borde azul) y botón de confirmación.
-- **Ingresar Dinero:** Formulario con campo de monto (borde verde) y botón de confirmación.
-- **Atrás:** El botón de retroceso (`finish()`) siempre devuelve al usuario a la pantalla anterior sin duplicar tareas.
+**Home (Dashboard)** ➔ Opciones:
+- **Perfil:** Muestra el nombre y correo del usuario activo, avatar vectorial de marca y opción de **Cerrar sesión** (limpia la sesión en `AuthModel` y retorna al acceso cerrando la pila de actividades).
+- **Enviar Dinero:** Permite ingresar destinatario, monto y notas. Valida saldo disponible antes de efectuar el débito.
+- **Ingresar Dinero:** Permite ingresar solicitante, monto (máximo $5000.00 por transacción) y notas.
+- **Actualización:** El saldo y la lista de transacciones se refrescan automáticamente en `onResume()`.
 
 ---
 
 ## Arquitectura y Decisiones Técnicas
 
-### Patrón de UI
-Se implementó **View Binding** de forma estricta para evitar el uso de `findViewById`. Todos los layouts raíz son `ConstraintLayout` para optimizar el rendimiento mediante jerarquías planas.
+### Patrón MVC Estricto
+1. **Capa Modelo (`com.alkewallet.model`):**
+   - Desarrollada en **Kotlin puro** sin dependencias ni imports de `android.*`.
+   - Contiene los singletons `AuthModel` y `WalletAccountModel`, los modelos inmutables `User` y `Transaction`, y el tipo sellado `WalletResult`.
+   - Centraliza la totalidad de las reglas de negocio (validación de expresiones regulares para correos, límites de transferencia, control de saldos e historial).
+2. **Capa Controlador (Activities / Fragments):**
+   - Gestionan eventos de UI, leen entradas de usuario, invocan el Modelo y presentan el resultado (`WalletResult.Success` o `WalletResult.Error`) vía componentes visuales o Toasts.
+3. **Capa Vista (Layouts XML):**
+   - Vistas pasivas en XML conectadas mediante **View Binding**.
+
+### Manejo de Edge-to-Edge (WindowInsetsCompat)
+Dado que Android 15+ (`targetSdk 37`) fuerza el modo Edge-to-Edge por defecto, se implementó el manejo programático de insets en el método `onCreate()` de las 6 Activities del proyecto:
 
 ```kotlin
-// Implementación estándar en Fragments
-private var _binding: FragmentLoginBinding? = null
-private val binding get() = _binding!!
-override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
+private fun setupWindowInsets() {
+    val initialLeft = binding.root.paddingLeft
+    val initialTop = binding.root.paddingTop
+    val initialRight = binding.root.paddingRight
+    val initialBottom = binding.root.paddingBottom
+
+    ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, windowInsets ->
+        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+        binding.root.setPadding(
+            initialLeft + insets.left,
+            initialTop + insets.top,
+            initialRight + insets.right,
+            initialBottom + insets.bottom
+        )
+        windowInsets
+    }
 }
 ```
 
-### Gestión de Recursos
-- **Strings:** Centralizados en `strings.xml` para escalabilidad.
-- **Colores:** Paleta personalizada `alke_*` definida en `colors.xml`.
-- **Dimensiones:** Márgenes y tamaños tipográficos en `dimens.xml`.
+---
+
+## Pruebas Unitarias JVM
+
+Se cuenta con una suite de **13 pruebas unitarias de Modelo** en la carpeta `src/test`, ejecutables en la JVM local sin necesidad de emulador ni instrumentación Android:
+
+* **`AuthModelTest` (7 tests):**
+  - Registro de nuevo usuario.
+  - Rechazo de correos duplicados.
+  - Login exitoso y asignación de `currentUser`.
+  - Error en login por contraseña incorrecta.
+  - Cierre de sesión y limpieza de estado.
+  - Validación de rechazo para correos con formato inválido en registro y login.
+* **`WalletAccountModelTest` (6 tests):**
+  - Envío de dinero con saldo suficiente (descuento e inserción en historial).
+  - Error al enviar un monto superior al saldo disponible.
+  - Rechazo de envíos con montos cero o negativos.
+  - Ingreso de dinero (incremento de saldo e inserción en historial).
+  - Rechazo de ingresos con montos cero o negativos.
+  - Validación del tope máximo de $5000.00 por transacción (rechazo en $5000.01 y éxito en el límite exacto de $5000.00).
 
 ---
 
 ## Problemas Resueltos
 
-| Problema | Solución |
-|----------|----------|
-| **Modo Oscuro:** Inputs invisibles | Se forzaron colores de stroke y hint en Material Components. |
-| **Diseño:** Vistas bajo la barra de estado | Uso de `android:fitsSystemWindows="true"` en layouts raíz. |
-| **Estabilidad:** Crashes por imágenes | Conversión de SVG inestables a **Vector Drawables**. |
-| **UX:** Textos dobles en campos | Eliminación de `hint` en EditText, manteniendo solo el del TextInputLayout. |
+| Problema | Solución Real Aplicada |
+|----------|------------------------|
+| **Edge-to-Edge / Barra de estado:** Solapamiento de vistas en Android 15+ (`targetSdk 37`) | Manejo programático de `WindowInsetsCompat` (`Type.systemBars()`) en el contenedor raíz de las 6 Activities, sumando los insets al padding inicial de diseño. |
+| **Limpieza de Stack en Logout:** Posibilidad de volver a pantallas protegidas tras cerrar sesión | Inclusión de flags `FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK` al navegar a `AuthActivity` tras invocar `AuthModel.logout()`. |
+| **Imágenes Hardcodeadas:** Foto de usuario específica de persona en perfil y home | Creación de un **VectorDrawable** nativo propio de la marca (`ic_avatar_placeholder`) con fondo circular `#BFE0F5` y silueta `#1A87DD`. |
+| **Validación de Correo:** Acepcíon de formatos inválidos sin `@` o dominio | Implementación de validación basada en `Regex` en la capa Modelo, testeable en JVM local. |
 
 ---
 
 ## Validación del Proyecto
 
-| Requerimiento | Estado |
-|---------------|:------:|
-| 9 Pantallas implementadas según consigna | ✅ |
-| View Binding implementado al 100% | ✅ |
-| Cero valores hardcodeados en layouts | ✅ |
-| ConstraintLayout en todos los archivos XML | ✅ |
-| Navegación funcional entre todos los módulos | ✅ |
-| Soporte para Modo Claro y Modo Oscuro | ✅ |
+| Requerimiento | Estado | Observaciones |
+|---------------|:------:|---------------|
+| 8 Componentes de Pantalla (6 Activities + 2 Fragments) | ✅ | Estructura modular completa y navegable. |
+| View Binding al 100% | ✅ | Utilizado en todas las Activities, Fragments y Adapters. |
+| Abstracción de Cadenas en `strings.xml` | ⚠️ Parcial | La mayoría de las cadenas están centralizadas; existen algunos hints/placeholders directos en XML pendientes de abstracción total. |
+| Soporte para Modo Oscuro | ⚠️ Parcial | Heredado del tema `DayNight` de Material Components; no cuenta con una paleta de colores personalizada en `values-night/colors.xml`. |
+| Cobertura de Pruebas Unitarias de Modelo | ✅ | 13 pruebas JVM en verde sin dependencias de Android. |
+| Navegación y Persistencia en Memoria Funcional | ✅ | Integración completa entre flujo de autenticación, dashboard y transacciones. |
 
 ---
 
@@ -155,28 +199,29 @@ override fun onDestroyView() {
 
 | # | Pantalla | Tipo | Componente Clave |
 |---|----------|------|------------------|
-| 1 | Splash | Activity | Logo institucional, delay 2.5s |
-| 2 | Selector | Activity | Botones de acceso y navegación fragmentada |
-| 3 | Login | Fragment | TextInputLayout con toggle de contraseña |
-| 4 | Signup | Fragment | 5 campos de registro validados visualmente |
-| 5 | Home | Activity | RecyclerView con datos de transacción exactos |
-| 6 | Perfil | Activity | MaterialCardView con opciones de navegación |
-| 7 | Envío | Activity | Input con `boxStrokeColor` azul primario |
-| 8 | Ingreso | Activity | Input con `boxStrokeColor` verde acción |
+| 1 | Splash | Activity | Logo institucional, delay 2.5s, `noHistory="true"` |
+| 2 | Auth Selector | Activity | Contenedor dinámico de fragmentos (`FragmentContainerView`) |
+| 3 | Login | Fragment | Campos de acceso vinculados a `AuthModel.login()` |
+| 4 | Signup | Fragment | Formulario de registro vinculado a `AuthModel.register()` |
+| 5 | Home | Activity | Saldo en tiempo real, `RecyclerView` y refresh automático en `onResume()` |
+| 6 | Perfil | Activity | Muestra usuario activo, avatar vectorial e `itemLogout` con limpieza de stack |
+| 7 | Enviar Dinero | Activity | Campos editables para destinatario, monto y notas con validación de saldo |
+| 8 | Ingresar Dinero | Activity | Campos editables para solicitante, monto y notas con tope de $5000.00 |
 
 ---
 
 ## Configuración del Proyecto
 
-### build.gradle.kts (app)
-- **minSdk:** 24
+### `build.gradle.kts` (:app)
+- **compileSdk:** 37
 - **targetSdk:** 37
+- **minSdk:** 24
 - **viewBinding:** Habilitado
 - **Material Components:** 1.10.0
 
-### AndroidManifest.xml
-- `SplashActivity` configurada como categoría `LAUNCHER`.
-- `android:noHistory="true"` aplicado al Splash para limpiar la pila de actividades.
+### `AndroidManifest.xml`
+- `SplashActivity` configurada como actividad de lanzamiento (`LAUNCHER`).
+- `android:noHistory="true"` asignado al Splash.
 
 ---
 
@@ -190,4 +235,3 @@ override fun onDestroyView() {
 ## Contacto y Soporte
 - **GitHub Issues:** [Reportar un problema](https://github.com/BrianSabio/Alke_Wallet/issues)
 - **LinkedIn:** [Brian Sabio](https://www.linkedin.com/in/brian-ezequiel-sabio/)
-
