@@ -34,7 +34,7 @@
         android:layout_margin="@dimen/margin_normal"
         android:padding="2dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/img_profile_placeholder"
+        android:src="@drawable/ic_avatar_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />

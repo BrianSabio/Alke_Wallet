@@ -55,7 +55,7 @@
         android:layout_width="@dimen/size_avatar_profile"
         android:layout_height="@dimen/size_avatar_profile"
         android:layout_marginTop="@dimen/margin_large"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@drawable/ic_avatar_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
