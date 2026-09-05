@@ -45,4 +45,16 @@ class WalletAccountModelTest {
         val result = WalletAccountModel.requestMoney("TestUserF", 0.0, "2025-01-05")
         assertTrue(result is WalletResult.Error)
     }
+
+    @Test
+    fun `requestMoney with amount exceeding max limit returns error`() {
+        val result = WalletAccountModel.requestMoney("TestUserG", 5000.01, "2025-01-06")
+        assertTrue(result is WalletResult.Error)
+    }
+
+    @Test
+    fun `requestMoney with amount exactly at max limit returns success`() {
+        val result = WalletAccountModel.requestMoney("TestUserH", 5000.0, "2025-01-07")
+        assertTrue(result is WalletResult.Success)
+    }
 }
