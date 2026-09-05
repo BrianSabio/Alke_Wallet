@@ -36,7 +36,7 @@
         android:background="@color/alke_gray_bg"
         app:layout_constraintTop_toBottomOf="@+id/ivBack" />
 
-    <!-- Recipient Block -->
+    <!-- Recipient Header Block -->
     <TextView
         android:id="@+id/tvInitial"
         android:layout_width="40dp"
@@ -71,18 +71,42 @@
         app:layout_constraintStart_toStartOf="@+id/tvRecipientName"
         app:layout_constraintTop_toBottomOf="@+id/tvRecipientName" />
 
+    <!-- Recipient Input Field -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRecipient"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:hint="Destinatario"
+        app:boxStrokeColor="@color/alke_blue_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvInitial">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etRecipient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="@string/placeholder_recipient_name" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Amount Input Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilAmount"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_normal"
         android:hint="@string/label_amount_send"
         app:boxStrokeColor="@color/alke_blue_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvInitial">
+        app:layout_constraintTop_toBottomOf="@+id/tilRecipient">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAmount"
@@ -93,6 +117,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Notes Input Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNotes"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
