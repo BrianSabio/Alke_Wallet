@@ -28,9 +28,9 @@ class RequestMoneyActivity : AppCompatActivity() {
         }
 
         binding.btnIngresarDinero.setOnClickListener {
-            val sender = binding.tvRecipientName.text?.toString()?.trim().orEmpty()
+            val sender = binding.etRequesterName.text?.toString()?.trim().orEmpty()
             if (sender.isEmpty()) {
-                Toast.makeText(this, "Ingrese un destinatario", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ingrese el nombre del solicitante", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

@@ -36,41 +36,6 @@
         android:background="@color/alke_gray_bg"
         app:layout_constraintTop_toBottomOf="@+id/ivBack" />
 
-    <!-- Recipient Header Block -->
-    <TextView
-        android:id="@+id/tvInitial"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="@dimen/margin_normal"
-        android:background="@drawable/bg_circle_gray"
-        android:gravity="center"
-        android:text="@string/placeholder_initial"
-        android:textColor="@color/alke_black"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separator" />
-
-    <TextView
-        android:id="@+id/tvRecipientName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:text="@string/placeholder_recipient_name"
-        android:textColor="@color/alke_black"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/tvInitial"
-        app:layout_constraintTop_toTopOf="@+id/tvInitial" />
-
-    <TextView
-        android:id="@+id/tvRecipientEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/placeholder_recipient_email"
-        android:textColor="@color/alke_gray_text"
-        android:textSize="@dimen/text_caption"
-        app:layout_constraintStart_toStartOf="@+id/tvRecipientName"
-        app:layout_constraintTop_toBottomOf="@+id/tvRecipientName" />
-
     <!-- Recipient Input Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilRecipient"
@@ -83,7 +48,7 @@
         app:boxStrokeColor="@color/alke_blue_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvInitial">
+        app:layout_constraintTop_toBottomOf="@+id/separator">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etRecipient"

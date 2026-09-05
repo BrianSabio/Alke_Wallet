@@ -36,51 +36,42 @@
         android:background="@color/alke_gray_bg"
         app:layout_constraintTop_toBottomOf="@+id/ivBack" />
 
-    <!-- Profile Block -->
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ivProfilePhoto"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="@dimen/margin_normal"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
+    <!-- Requester Name Input Field -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRequesterName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:hint="Nombre del solicitante"
+        app:boxStrokeColor="@color/alke_green_action"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separator"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+        app:layout_constraintTop_toBottomOf="@+id/separator">
 
-    <TextView
-        android:id="@+id/tvRecipientName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:text="@string/placeholder_recipient_name_request"
-        android:textColor="@color/alke_black"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/ivProfilePhoto"
-        app:layout_constraintTop_toTopOf="@+id/ivProfilePhoto" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etRequesterName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="@string/placeholder_recipient_name_request" />
 
-    <TextView
-        android:id="@+id/tvRecipientEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/placeholder_recipient_email_request"
-        android:textColor="@color/alke_gray_text"
-        android:textSize="@dimen/text_caption"
-        app:layout_constraintStart_toStartOf="@+id/tvRecipientName"
-        app:layout_constraintTop_toBottomOf="@+id/tvRecipientName" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Amount Input Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilAmount"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_normal"
         android:hint="@string/label_amount_request"
         app:boxStrokeColor="@color/alke_green_action"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfilePhoto">
+        app:layout_constraintTop_toBottomOf="@+id/tilRequesterName">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAmount"
@@ -91,6 +82,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Notes Input Field -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNotes"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
