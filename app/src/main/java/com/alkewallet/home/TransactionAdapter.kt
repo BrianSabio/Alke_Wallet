@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.alkewallet.R
 import com.alkewallet.databinding.ItemTransactionBinding
+import com.alkewallet.model.Transaction
 
 class TransactionAdapter(private val transactions: List<Transaction>) :
     RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {

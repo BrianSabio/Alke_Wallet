@@ -6,9 +6,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alkewallet.databinding.ActivityHomeBinding
+import com.alkewallet.model.AuthModel
+import com.alkewallet.model.WalletAccountModel
 import com.alkewallet.profile.ProfileActivity
 import com.alkewallet.transactions.RequestMoneyActivity
 import com.alkewallet.transactions.SendMoneyActivity
+import java.util.Locale
 
 class HomePageActivity : AppCompatActivity() {
 
@@ -18,16 +21,6 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val transactions = listOf(
-            Transaction("Yara Khalil", "17 Aug 2026", 15.00, true),
-            Transaction("Sara Ibrahim", "16 Aug 2026", 20.50, false),
-            Transaction("Ahmad Ibrahim", "15 Aug 2026", 12.40, false),
-            Transaction("Reem Khaled", "14 Aug 2026", 21.30, true),
-            Transaction("Hiba Saleh", "13 Aug 2026", 9.00, false)
-        )
-
-        renderTransactions(transactions)
 
         binding.ivProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
@@ -40,17 +33,31 @@ class HomePageActivity : AppCompatActivity() {
         binding.btnIngresarDinero.setOnClickListener {
             startActivity(Intent(this, RequestMoneyActivity::class.java))
         }
+
+        refreshDashboard()
     }
 
-    private fun renderTransactions(list: List<Transaction>) {
-        if (list.isEmpty()) {
+    override fun onResume() {
+        super.onResume()
+        refreshDashboard()
+    }
+
+    private fun refreshDashboard() {
+        val currentUser = AuthModel.currentUser
+        val displayName = currentUser?.fullName() ?: "Amanda"
+        binding.tvGreeting.text = "Hola, $displayName!"
+
+        binding.tvBalanceAmount.text = String.format(Locale.US, "$%.2f", WalletAccountModel.balance)
+
+        val transactions = WalletAccountModel.getTransactions()
+        if (transactions.isEmpty()) {
             binding.rvTransactions.visibility = View.GONE
             binding.emptyStateContainer.visibility = View.VISIBLE
         } else {
             binding.rvTransactions.visibility = View.VISIBLE
             binding.emptyStateContainer.visibility = View.GONE
             binding.rvTransactions.layoutManager = LinearLayoutManager(this)
-            binding.rvTransactions.adapter = TransactionAdapter(list)
+            binding.rvTransactions.adapter = TransactionAdapter(transactions)
         }
     }
 }
