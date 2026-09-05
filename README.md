@@ -227,7 +227,7 @@ Se cuenta con una suite de **13 pruebas unitarias de Modelo** en la carpeta `src
 
 ## Autores y Contribuciones
 - **Desarrollador:** Brian Sabio
-- **Contribuciones:** Este proyecto es una entrega técnica del Módulo 4 (ABP). No se aceptan Pull Requests externos en esta etapa.
+- **Contribuciones:** Este proyecto es una entrega técnica del Módulo 4 y 5 del curso del SENCE "DESARROLLO DE APLICACIONES MÓVILES ANDROID TRAINEE'. No se aceptan Pull Requests externos en esta etapa.
 - **Licencia:** MIT
 
 ---
