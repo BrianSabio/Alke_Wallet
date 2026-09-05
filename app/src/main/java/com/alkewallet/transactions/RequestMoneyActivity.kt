@@ -41,8 +41,15 @@ class RequestMoneyActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            val notes = binding.etNotes.text?.toString()?.trim().orEmpty()
+            val targetName = if (notes.isNotEmpty()) {
+                "$sender — $notes"
+            } else {
+                sender
+            }
+
             val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
-            when (val result = WalletAccountModel.requestMoney(sender, amount, date)) {
+            when (val result = WalletAccountModel.requestMoney(targetName, amount, date)) {
                 is WalletResult.Success -> {
                     Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
                     finish()
