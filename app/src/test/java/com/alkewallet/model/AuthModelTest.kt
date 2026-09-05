@@ -45,4 +45,17 @@ class AuthModelTest {
         AuthModel.logout()
         assertNull(AuthModel.currentUser)
     }
+
+    @Test
+    fun `register with invalid email format returns error`() {
+        val user = User("Test", "User", "correo-invalido-sin-arroba", "pass123")
+        val result = AuthModel.register(user)
+        assertTrue(result is WalletResult.Error)
+    }
+
+    @Test
+    fun `login with invalid email format returns error`() {
+        val result = AuthModel.login("no-es-un-email", "cualquierpass")
+        assertTrue(result is WalletResult.Error)
+    }
 }
