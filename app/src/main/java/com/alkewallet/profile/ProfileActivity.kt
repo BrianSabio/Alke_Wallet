@@ -1,9 +1,12 @@
 package com.alkewallet.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.alkewallet.auth.AuthActivity
 import com.alkewallet.databinding.ActivityProfileBinding
+import com.alkewallet.model.AuthModel
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -20,6 +23,25 @@ class ProfileActivity : AppCompatActivity() {
 
         binding.ivBack.setOnClickListener {
             finish()
+        }
+
+        binding.itemLogout.setOnClickListener {
+            AuthModel.logout()
+            val intent = Intent(this, AuthActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val currentUser = AuthModel.currentUser
+        if (currentUser != null) {
+            binding.tvUsername.text = "${currentUser.fullName()}\n${currentUser.email}"
+        } else {
+            binding.tvUsername.text = "Usuario no disponible"
         }
     }
 }

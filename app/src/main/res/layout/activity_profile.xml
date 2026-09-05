@@ -55,7 +55,7 @@
         android:layout_width="@dimen/size_avatar_profile"
         android:layout_height="@dimen/size_avatar_profile"
         android:layout_marginTop="@dimen/margin_large"
-        android:src="@drawable/img_profile_placeholder"
+        android:src="@mipmap/ic_launcher_round"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
@@ -66,6 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_normal"
+        android:gravity="center"
         android:text="@string/profile_username"
         android:textColor="@color/alke_black"
         android:textSize="@dimen/text_title"
@@ -211,6 +212,38 @@
                     android:layout_weight="1"
                     android:text="@string/profile_menu_help"
                     android:textColor="@color/alke_black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_arrow"
+                    android:textColor="@color/alke_gray_text" />
+            </LinearLayout>
+
+            <!-- Item Logout -->
+            <LinearLayout
+                android:id="@+id/itemLogout"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_normal">
+
+                <ImageView
+                    android:layout_width="@dimen/size_icon"
+                    android:layout_height="@dimen/size_icon"
+                    android:src="@android:drawable/ic_lock_power_off" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_weight="1"
+                    android:text="Cerrar sesión"
+                    android:textColor="@android:color/holo_red_dark" />
 
                 <TextView
                     android:layout_width="wrap_content"
