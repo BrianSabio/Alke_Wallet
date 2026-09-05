@@ -3,6 +3,8 @@ package com.alkewallet.transactions
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.alkewallet.databinding.ActivitySendMoneyBinding
 import com.alkewallet.model.WalletAccountModel
 import com.alkewallet.model.WalletResult
@@ -18,6 +20,8 @@ class SendMoneyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySendMoneyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupWindowInsets()
 
         binding.ivBack.setOnClickListener {
             finish()
@@ -54,6 +58,24 @@ class SendMoneyActivity : AppCompatActivity() {
                     Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    private fun setupWindowInsets() {
+        val initialLeft = binding.root.paddingLeft
+        val initialTop = binding.root.paddingTop
+        val initialRight = binding.root.paddingRight
+        val initialBottom = binding.root.paddingBottom
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.root.setPadding(
+                initialLeft + insets.left,
+                initialTop + insets.top,
+                initialRight + insets.right,
+                initialBottom + insets.bottom
+            )
+            windowInsets
         }
     }
 }
